@@ -1,11 +1,10 @@
 """
-streamlit_app.py - Fixed AI Products & Apps Catalog
-Clean card display without raw HTML showing
+streamlit_app.py - AI Products & Apps Catalog (Fixed Rendering)
+Uses Streamlit native components with minimal HTML for decoration only
 """
 
 import streamlit as st
-import pandas as pd
-from typing import List, Dict, Optional
+from typing import List, Dict
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -17,139 +16,26 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Simplified CSS that works with Streamlit
+# Minimal CSS - only for accents and decorations that won't break
 st.markdown("""
     <style>
-    /* Main header gradient */
-    .main-header {
-        font-size: 3.5rem;
-        text-align: center;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 1rem;
-        font-weight: 700;
-    }
-    
-    /* Stat cards */
-    .stat-container {
-        background: white;
-        padding: 1.5rem;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        text-align: center;
-        border: 1px solid #e0e0e0;
-    }
-    
+    /* Just a few safe styles */
     .stat-number {
-        font-size: 2.5rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    
-    /* Category cards */
-    .category-wrapper {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 1.5rem;
-        border-radius: 15px;
-        color: white;
-        margin-bottom: 1rem;
-        text-align: center;
-        transition: transform 0.3s;
-    }
-    
-    .category-wrapper:hover {
-        transform: translateY(-5px);
-    }
-    
-    .category-title {
-        color: white !important;
-        font-size: 1.2rem;
-        margin: 0.5rem 0;
-    }
-    
-    .category-stats {
-        color: rgba(255,255,255,0.9);
-        font-size: 0.9rem;
-    }
-    
-    /* Product card styling */
-    .product-container {
-        background: white;
-        padding: 1.5rem;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        margin-bottom: 1rem;
-        border-left: 4px solid #667eea;
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-    
-    .product-container:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    }
-    
-    /* Badges */
-    .badge {
-        display: inline-block;
-        padding: 0.3rem 0.8rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        margin: 0.2rem;
-    }
-    
-    .badge-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-    }
-    
-    .badge-success {
-        background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
-        color: white;
-    }
-    
-    .badge-info {
-        background: #e8eaf6;
+        font-size: 2rem;
+        font-weight: bold;
         color: #667eea;
-        border: 1px solid #c5cae9;
     }
-    
-    .badge-trending {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        color: white;
-        animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-        0% { opacity: 1; }
-        50% { opacity: 0.7; }
-        100% { opacity: 1; }
-    }
-    
-    /* Popularity bar */
-    .popularity-bar {
-        height: 6px;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-        border-radius: 10px;
-        margin: 0.5rem 0;
-    }
-    
-    /* Footer */
-    .footer-container {
+    .footer-text {
         text-align: center;
+        color: #666;
         padding: 2rem;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        border-radius: 20px;
     }
     </style>
 """, unsafe_allow_html=True)
 
 @dataclass
 class AIProduct:
-    """Enhanced AI Product data model"""
+    """AI Product data model"""
     name: str
     emoji: str
     url: str
@@ -167,17 +53,17 @@ class AIProduct:
     learning_curve: str
 
 class AICatalog:
-    """Extended catalog with 60+ AI tools"""
+    """Extended catalog with AI tools"""
     
     def __init__(self):
-        self.products = self._initialize_extended_catalog()
+        self.products = self._initialize_catalog()
         self._calculate_stats()
     
-    def _initialize_extended_catalog(self) -> List[AIProduct]:
-        """Initialize with comprehensive catalog"""
+    def _initialize_catalog(self) -> List[AIProduct]:
+        """Initialize catalog with AI tools"""
         
         return [
-            # ========= VIDEO GENERATION & EDITING =========
+            # VIDEO GENERATION & EDITING
             AIProduct(
                 name="Runway ML", emoji="🎬",
                 url="https://runwayml.com",
@@ -234,7 +120,7 @@ class AICatalog:
                 integration_ecosystem=["HubSpot", "Salesforce"], learning_curve="Easy"
             ),
             
-            # ========= TEXT & CONTENT GENERATION =========
+            # TEXT & CONTENT GENERATION
             AIProduct(
                 name="Jasper", emoji="✍️",
                 url="https://jasper.ai",
@@ -280,7 +166,7 @@ class AICatalog:
                 integration_ecosystem=["WordPress", "Shopify"], learning_curve="Easy"
             ),
             
-            # ========= IMAGE GENERATION =========
+            # IMAGE GENERATION
             AIProduct(
                 name="Midjourney", emoji="🎨",
                 url="https://midjourney.com",
@@ -337,7 +223,7 @@ class AICatalog:
                 integration_ecosystem=["Dropbox", "Google Drive", "Instagram"], learning_curve="Easy"
             ),
             
-            # ========= CODE & DEVELOPMENT =========
+            # CODE & DEVELOPMENT
             AIProduct(
                 name="GitHub Copilot", emoji="💻",
                 url="https://github.com/features/copilot",
@@ -372,7 +258,7 @@ class AICatalog:
                 integration_ecosystem=["GitHub", "Vercel"], learning_curve="Easy"
             ),
             
-            # ========= CHATBOTS & AI ASSISTANTS =========
+            # CHATBOTS & AI ASSISTANTS
             AIProduct(
                 name="ChatGPT", emoji="🤖",
                 url="https://chat.openai.com",
@@ -407,7 +293,7 @@ class AICatalog:
                 integration_ecosystem=["Chrome Extension"], learning_curve="Easy"
             ),
             
-            # ========= VOICE & AUDIO =========
+            # VOICE & AUDIO
             AIProduct(
                 name="ElevenLabs", emoji="🗣️",
                 url="https://elevenlabs.io",
@@ -431,7 +317,7 @@ class AICatalog:
                 integration_ecosystem=["Canva", "Google Slides"], learning_curve="Easy"
             ),
             
-            # ========= MUSIC GENERATION =========
+            # MUSIC GENERATION
             AIProduct(
                 name="Suno AI", emoji="🎵",
                 url="https://suno.ai",
@@ -444,7 +330,7 @@ class AICatalog:
                 integration_ecosystem=["API"], learning_curve="Easy"
             ),
             
-            # ========= PRODUCTIVITY =========
+            # PRODUCTIVITY
             AIProduct(
                 name="Notion AI", emoji="📝",
                 url="https://notion.so",
@@ -457,7 +343,7 @@ class AICatalog:
                 integration_ecosystem=["Slack", "Google Drive", "GitHub"], learning_curve="Easy"
             ),
             
-            # ========= PRESENTATION =========
+            # PRESENTATION
             AIProduct(
                 name="Gamma", emoji="✨",
                 url="https://gamma.app",
@@ -481,7 +367,7 @@ class AICatalog:
                 integration_ecosystem=["Slack", "PowerPoint"], learning_curve="Easy"
             ),
             
-            # ========= MARKETING & SEO =========
+            # MARKETING & SEO
             AIProduct(
                 name="SurferSEO", emoji="📈",
                 url="https://surferseo.com",
@@ -494,7 +380,7 @@ class AICatalog:
                 integration_ecosystem=["Google Docs", "WordPress", "Jasper"], learning_curve="Moderate"
             ),
             
-            # ========= MEETING & TRANSCRIPTION =========
+            # MEETING & TRANSCRIPTION
             AIProduct(
                 name="Otter.ai", emoji="📝",
                 url="https://otter.ai",
@@ -518,7 +404,7 @@ class AICatalog:
                 integration_ecosystem=["Salesforce", "HubSpot", "Slack"], learning_curve="Easy"
             ),
             
-            # ========= 3D MODELING =========
+            # 3D MODELING
             AIProduct(
                 name="Meshy AI", emoji="🎮",
                 url="https://meshy.ai",
@@ -531,7 +417,7 @@ class AICatalog:
                 integration_ecosystem=["Unity", "Blender", "Unreal"], learning_curve="Moderate"
             ),
             
-            # ========= E-COMMERCE =========
+            # E-COMMERCE
             AIProduct(
                 name="Octane AI", emoji="🛍️",
                 url="https://octaneai.com",
@@ -544,7 +430,7 @@ class AICatalog:
                 integration_ecosystem=["Shopify", "Klaviyo", "ReCharge"], learning_curve="Easy"
             ),
             
-            # ========= CUSTOMER SERVICE =========
+            # CUSTOMER SERVICE
             AIProduct(
                 name="Intercom Fin", emoji="🎧",
                 url="https://intercom.com/fin",
@@ -579,7 +465,7 @@ class AICatalog:
             self.pricing_stats[product.pricing_type] += 1
     
     def search_by_keyword(self, keyword: str) -> List[AIProduct]:
-        """Enhanced search across all fields"""
+        """Search across all fields"""
         keyword = keyword.lower()
         results = []
         for product in self.products:
@@ -589,7 +475,6 @@ class AICatalog:
                 f"{' '.join(product.target_users)} {' '.join(product.platform)} "
                 f"{' '.join(product.integration_ecosystem)} {product.learning_curve}"
             ).lower()
-            
             if keyword in searchable_text:
                 results.append(product)
         return sorted(results, key=lambda x: x.popularity_score, reverse=True)
@@ -600,9 +485,8 @@ class AICatalog:
                                    platform: str = None,
                                    learning_curve: str = None,
                                    min_rating: float = 0) -> List[AIProduct]:
-        """Advanced multi-criteria filtering"""
+        """Multi-criteria filtering"""
         results = self.products
-        
         if category:
             results = [p for p in results if category in p.use_cases]
         if pricing_type:
@@ -613,11 +497,10 @@ class AICatalog:
             results = [p for p in results if p.learning_curve == learning_curve]
         if min_rating > 0:
             results = [p for p in results if p.rating >= min_rating]
-        
         return sorted(results, key=lambda x: x.popularity_score, reverse=True)
     
     def get_all_use_cases(self) -> List[str]:
-        """Get sorted list of all unique use cases"""
+        """Get sorted unique use cases"""
         use_cases = set()
         for product in self.products:
             use_cases.update(product.use_cases)
@@ -626,64 +509,56 @@ class AICatalog:
 def display_product_card(product: AIProduct):
     """Display product card using Streamlit native components"""
     
-    with st.container():
-        # Card container with styling
-        st.markdown(f"""
-        <div class="product-container">
-        """, unsafe_allow_html=True)
+    # Use expander for clean card-like appearance
+    with st.expander(f"{product.emoji} **{product.name}** — {'⭐' * int(product.rating)} {product.rating}/5", expanded=False):
         
-        # Header with emoji, name, and trending badge
-        col1, col2 = st.columns([3, 1])
+        # Two columns for layout
+        col1, col2 = st.columns([2, 1])
+        
         with col1:
-            trending_badge = '<span class="badge badge-trending">🔥 Trending</span>' if product.popularity_score > 85 else ''
-            st.markdown(f"### {product.emoji} {product.name} {trending_badge}", unsafe_allow_html=True)
+            st.markdown(f"**Description:** {product.description}")
+            
+            # Use cases
+            st.markdown("**🎯 Use Cases:**")
+            st.markdown("  \n".join([f"• {uc}" for uc in product.use_cases]))
+            
+            # Features
+            st.markdown("**🔧 Key Features:**")
+            st.markdown("  \n".join([f"• {f}" for f in product.features]))
         
-        # Rating and pricing
-        stars = '⭐' * int(product.rating)
-        st.markdown(f"""
-        <span style="font-size: 1.1rem;">{stars}</span> 
-        <span style="color: #666;">{product.rating}/5</span>
-        <span class="badge badge-success" style="margin-left: 1rem;">💰 {product.pricing}</span>
-        <span style="margin: 0 0.5rem;">|</span>
-        <span>📚 {product.learning_curve}</span>
-        """, unsafe_allow_html=True)
-        
-        # Popularity bar
-        st.markdown(f"""
-        <div class="popularity-bar" style="width: {int(product.popularity_score)}%;"></div>
-        <small style="color: #999;">Popularity: {product.popularity_score}/100</small>
-        """, unsafe_allow_html=True)
-        
-        # Description
-        st.markdown(f"<p style='color: #555; margin: 1rem 0;'>{product.description}</p>", unsafe_allow_html=True)
-        
-        # Use cases as badges
-        use_cases_html = " ".join([f'<span class="badge badge-primary">{uc}</span>' for uc in product.use_cases])
-        st.markdown(f"**🎯 Use Cases:**<br>{use_cases_html}", unsafe_allow_html=True)
+        with col2:
+            # Pricing
+            if product.pricing_type == "Freemium":
+                st.success(f"💰 {product.pricing}")
+            elif product.pricing_type == "Free":
+                st.info(f"🆓 {product.pricing}")
+            else:
+                st.warning(f"💳 {product.pricing}")
+            
+            # Rating
+            st.metric("Rating", f"{'⭐' * int(product.rating)} {product.rating}/5")
+            
+            # Popularity
+            st.metric("Popularity", f"{product.popularity_score}/100")
+            
+            # Learning curve
+            curve_color = "🟢" if product.learning_curve == "Easy" else "🟡" if product.learning_curve == "Moderate" else "🔴"
+            st.markdown(f"**Learning Curve:** {curve_color} {product.learning_curve}")
+            
+            # Founded
+            st.markdown(f"**Founded:** {product.founded_year}")
+            
+            # Platform
+            st.markdown(f"**Platform:** {', '.join(product.platform)}")
         
         # Target users
-        users_html = " ".join([f'<span class="badge badge-info">{u}</span>' for u in product.target_users])
-        st.markdown(f"**👥 For:** {users_html}", unsafe_allow_html=True)
-        
-        # Features
-        features_html = " ".join([f'<span class="badge badge-info">{f}</span>' for f in product.features[:4]])
-        st.markdown(f"**🔧 Key Features:** {features_html}", unsafe_allow_html=True)
+        st.markdown("**👥 Target Users:** " + " | ".join(product.target_users))
         
         # Integrations
-        st.markdown(f"**🔗 Integrations:** {', '.join(product.integration_ecosystem)}")
+        st.markdown("**🔗 Integrations:** " + " | ".join(product.integration_ecosystem))
         
-        # Footer with URL, year, platform
-        st.markdown(f"""
-        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e0e0e0;">
-            <a href="{product.url}" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 600;">
-                🌐 Visit Website →
-            </a>
-            <span style="color: #999; margin-left: 1rem;">Founded: {product.founded_year}</span>
-            <span style="color: #999; margin-left: 1rem;">Platform: {', '.join(product.platform)}</span>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown('</div>', unsafe_allow_html=True)
+        # Visit website button
+        st.link_button(f"🌐 Visit {product.name}", product.url)
 
 def get_category_emoji(category: str) -> str:
     """Return appropriate emoji for category"""
@@ -727,111 +602,84 @@ def main():
     catalog = st.session_state.catalog
     
     # Header
-    st.markdown('<h1 class="main-header">🤖 AI Products & Apps Catalog</h1>', unsafe_allow_html=True)
-    st.markdown('<p style="text-align: center; color: #666; font-size: 1.2rem; margin-bottom: 2rem;">Discover 35+ AI tools across 25+ categories — Find the perfect AI solution for your workflow</p>', unsafe_allow_html=True)
+    st.title("🤖 AI Products & Apps Catalog")
+    st.markdown("*Discover 35+ AI tools across 25+ categories — Find the perfect AI solution for your workflow*")
     
     # Statistics Dashboard
-    st.markdown("---")
-    col1, col2, col3, col4, col5 = st.columns(5)
+    st.divider()
     
     avg_rating = round(sum(p.rating for p in catalog.products) / len(catalog.products), 1)
     
+    col1, col2, col3, col4, col5 = st.columns(5)
+    
     with col1:
-        st.markdown(f"""
-        <div class="stat-container">
-            <div class="stat-number">{len(catalog.products)}+</div>
-            <div>Total Tools</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.metric("Total Tools", f"{len(catalog.products)}+")
     
     with col2:
-        st.markdown(f"""
-        <div class="stat-container">
-            <div class="stat-number">{len(catalog.category_stats)}</div>
-            <div>Categories</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.metric("Categories", len(catalog.category_stats))
     
     with col3:
         trending = sorted(catalog.products, key=lambda x: x.popularity_score, reverse=True)[0]
-        st.markdown(f"""
-        <div class="stat-container">
-            <div class="stat-number">🔥</div>
-            <div>Top Tool</div>
-            <small>{trending.name}</small>
-        </div>
-        """, unsafe_allow_html=True)
+        st.metric("🔥 Top Tool", trending.name)
     
     with col4:
-        st.markdown(f"""
-        <div class="stat-container">
-            <div class="stat-number">⭐{avg_rating}</div>
-            <div>Avg Rating</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.metric("Avg Rating", f"⭐ {avg_rating}")
     
     with col5:
         newest = sorted(catalog.products, key=lambda x: x.founded_year, reverse=True)[0]
-        st.markdown(f"""
-        <div class="stat-container">
-            <div class="stat-number">🆕</div>
-            <div>Newest</div>
-            <small>{newest.name}</small>
-        </div>
-        """, unsafe_allow_html=True)
+        st.metric("🆕 Newest", newest.name)
     
-    st.markdown("---")
+    st.divider()
     
     # Sidebar
     with st.sidebar:
-        st.markdown("## 🔍 Search & Filters")
+        st.header("🔍 Search & Filters")
         
-        search_query = st.text_input("🔎 Search tools:", placeholder="e.g., video, marketing, code...")
+        search_query = st.text_input("Search tools:", placeholder="e.g., video, marketing, code...")
         
-        st.markdown("---")
-        st.markdown("## 🎯 Advanced Filters")
+        st.divider()
+        st.subheader("🎯 Advanced Filters")
         
         all_use_cases = ["All"] + catalog.get_all_use_cases()
-        selected_category = st.selectbox("📁 Category:", all_use_cases)
+        selected_category = st.selectbox("Category:", all_use_cases)
         
         pricing_options = ["All", "Free", "Freemium", "Paid", "Enterprise"]
-        selected_pricing = st.selectbox("💰 Pricing:", pricing_options)
+        selected_pricing = st.selectbox("Pricing:", pricing_options)
         
         platforms = ["All", "Web", "Mobile", "Desktop", "API", "Browser Extension"]
-        selected_platform = st.selectbox("📱 Platform:", platforms)
+        selected_platform = st.selectbox("Platform:", platforms)
         
         learning_options = ["All", "Easy", "Moderate", "Advanced"]
-        selected_learning = st.selectbox("📚 Learning Curve:", learning_options)
+        selected_learning = st.selectbox("Learning Curve:", learning_options)
         
-        min_rating = st.slider("⭐ Minimum Rating:", 0.0, 5.0, 0.0, 0.5)
+        min_rating = st.slider("Minimum Rating:", 0.0, 5.0, 0.0, 0.5)
         
-        if st.button("🔄 Reset Filters"):
+        if st.button("🔄 Reset Filters", use_container_width=True):
             st.rerun()
         
-        st.markdown("---")
+        st.divider()
         
-        # Pricing distribution
-        st.markdown("### 💰 Pricing Distribution")
+        # Stats in sidebar
+        st.subheader("💰 Pricing Distribution")
         for ptype, count in catalog.pricing_stats.items():
-            st.markdown(f"• **{ptype}**: {count} tools")
+            st.write(f"• **{ptype}**: {count} tools")
         
-        st.markdown("---")
+        st.divider()
         
-        # Top categories
-        st.markdown("### 🏆 Top Categories")
+        st.subheader("🏆 Top Categories")
         top_cats = sorted(catalog.category_stats.items(), 
                          key=lambda x: x[1]['avg_popularity'], 
                          reverse=True)[:5]
         for cat, stats in top_cats:
-            st.markdown(f"• **{cat}**: {stats['count']} tools (⭐{stats['avg_rating']})")
+            st.write(f"• **{cat}**: {stats['count']} tools (⭐{stats['avg_rating']})")
     
-    # Main content
+    # Main content area
     if search_query:
         results = catalog.search_by_keyword(search_query)
-        st.markdown(f"### 🔍 Search Results for '{search_query}' ({len(results)} found)")
+        st.subheader(f"🔍 Search Results for '{search_query}' ({len(results)} found)")
         
         if results:
-            sort_by = st.selectbox("Sort by:", ["Popularity", "Rating", "Newest", "Name"])
+            sort_by = st.selectbox("Sort by:", ["Popularity", "Rating", "Newest", "Name"], key="sort_search")
             
             if sort_by == "Rating":
                 results = sorted(results, key=lambda x: x.rating, reverse=True)
@@ -840,10 +688,8 @@ def main():
             elif sort_by == "Name":
                 results = sorted(results, key=lambda x: x.name)
             
-            cols = st.columns(2)
-            for idx, product in enumerate(results):
-                with cols[idx % 2]:
-                    display_product_card(product)
+            for product in results:
+                display_product_card(product)
         else:
             st.warning("No tools found. Try different keywords!")
     
@@ -863,57 +709,56 @@ def main():
         if selected_pricing != "All": filters.append(selected_pricing)
         if selected_platform != "All": filters.append(selected_platform)
         
-        st.markdown(f"### 🎯 Filtered Results ({', '.join(filters)}) — {len(results)} tools")
+        st.subheader(f"🎯 Filtered Results ({', '.join(filters) if filters else 'All'}) — {len(results)} tools")
         
         if results:
-            cols = st.columns(2)
-            for idx, product in enumerate(results):
-                with cols[idx % 2]:
-                    display_product_card(product)
+            for product in results:
+                display_product_card(product)
         else:
             st.warning("No tools match your criteria. Try adjusting filters!")
     
     else:
         # Default view: Category grid
-        st.markdown("## 📁 Browse by Category")
+        st.subheader("📁 Browse by Category")
+        st.caption("Select a category from the sidebar or use the search bar to find tools")
         
+        # Display category cards in a grid
         category_list = list(catalog.category_stats.items())
-        cols = st.columns(3)
         
-        for idx, (category, stats) in enumerate(category_list):
-            with cols[idx % 3]:
-                st.markdown(f"""
-                <div class="category-wrapper">
-                    <div style="font-size: 2.5rem;">{get_category_emoji(category)}</div>
-                    <h4 class="category-title">{category}</h4>
-                    <div class="category-stats">
-                        <strong>{stats['count']}</strong> tools<br>
-                        ⭐{stats['avg_rating']} avg rating<br>
-                        📊 {stats['avg_popularity']}/100 popularity
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+        # Create rows of 3 columns
+        for i in range(0, len(category_list), 3):
+            cols = st.columns(3)
+            for j in range(3):
+                if i + j < len(category_list):
+                    category, stats = category_list[i + j]
+                    with cols[j]:
+                        with st.container(border=True):
+                            st.markdown(f"### {get_category_emoji(category)}")
+                            st.markdown(f"**{category}**")
+                            st.write(f"📦 {stats['count']} tools")
+                            st.write(f"⭐ {stats['avg_rating']} avg rating")
+                            st.write(f"📊 {stats['avg_popularity']}/100 popularity")
+        
+        st.divider()
         
         # Trending section
-        st.markdown("---")
-        st.markdown("## 🔥 Trending AI Tools")
+        st.subheader("🔥 Trending AI Tools")
         trending_tools = sorted(catalog.products, key=lambda x: x.popularity_score, reverse=True)[:6]
-        cols = st.columns(3)
-        for idx, tool in enumerate(trending_tools):
-            with cols[idx % 3]:
-                display_product_card(tool)
+        
+        for i in range(0, len(trending_tools), 2):
+            cols = st.columns(2)
+            for j in range(2):
+                if i + j < len(trending_tools):
+                    with cols[j]:
+                        display_product_card(trending_tools[i + j])
     
     # Footer
-    st.markdown("---")
+    st.divider()
     st.markdown(f"""
-    <div class="footer-container">
-        <h3 style="color: #667eea;">🚀 AI Products & Apps Catalog</h3>
-        <p style="color: #666;">Comprehensive database of {len(catalog.products)}+ AI tools across {len(catalog.category_stats)} categories</p>
-        <p style="color: #999; font-size: 0.9rem;">
-            Last updated: {datetime.now().strftime('%B %Y')} | 
-            Avg Rating: {avg_rating}⭐ | 
-            Categories: {len(catalog.category_stats)}
-        </p>
+    <div class="footer-text">
+        <h3>🚀 AI Products & Apps Catalog</h3>
+        <p>Comprehensive database of {len(catalog.products)}+ AI tools across {len(catalog.category_stats)} categories</p>
+        <p>Last updated: {datetime.now().strftime('%B %Y')} | Avg Rating: {avg_rating}⭐ | Categories: {len(catalog.category_stats)}</p>
     </div>
     """, unsafe_allow_html=True)
 
